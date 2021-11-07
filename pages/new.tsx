@@ -1,13 +1,13 @@
 import { Container } from '@components/container';
 import { HackerNewsItem } from '@components/HackerNewsItem';
 import { Layout } from '@components/layout';
-import { getTopStories } from '@lib/hackernews';
+import { getStories } from '@lib/hackernews';
 import type { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 import { ReactElement } from 'react';
 
-export const getServerSideProps = async ({ req, res }: GetServerSidePropsContext) => {
-  const items = await getTopStories();
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const items = await getStories();
 
   return {
     props: {
@@ -16,7 +16,7 @@ export const getServerSideProps = async ({ req, res }: GetServerSidePropsContext
   };
 };
 
-const Home = ({ items }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const New = ({ items }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
       <Head>
@@ -41,8 +41,8 @@ const Home = ({ items }: InferGetServerSidePropsType<typeof getServerSideProps>)
   );
 };
 
-Home.getLayout = (page: ReactElement) => {
+New.getLayout = (page: ReactElement) => {
   return <Layout>{page}</Layout>;
 };
 
-export default Home;
+export default New;
