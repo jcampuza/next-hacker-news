@@ -1,6 +1,6 @@
 import { PAGINATION_DEFAULT } from './pagination';
 import { range } from './math';
-import { simpleMemoryCache } from './simplecache';
+import { simpleCache } from './simpleCache';
 import { tap } from './promise';
 import { isNotNullOrUndefined } from './util';
 import { fetchJson } from './http';
@@ -27,7 +27,7 @@ export const getMaxItemId = () => {
   return fetchJson<number>(createHNUrl('maxitem'));
 };
 
-const itemCache = simpleMemoryCache<IHackerNewsItem>();
+const itemCache = simpleCache<IHackerNewsItem>();
 
 export const getItem = async (id: string | number) => {
   const cached = itemCache.get(id);

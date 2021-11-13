@@ -1,14 +1,11 @@
-type CNArg = undefined | null | string | Record<string, boolean>;
+type CNArg = string | Record<string, boolean>;
 
-type CNArgs = CNArg | CNArg[];
+type CNArgs = CNArg;
 
 export const cn = (...args: CNArgs[]) => {
-  let cnList: string[] = [];
-  for (const arg of args) {
-    if (arg === null || arg === undefined) {
-      continue;
-    }
+  const cnList: string[] = [];
 
+  for (const arg of args) {
     if (typeof arg === 'string') {
       cnList.push(arg);
     }
@@ -19,10 +16,6 @@ export const cn = (...args: CNArgs[]) => {
           cnList.push(key);
         }
       }
-    }
-
-    if (Array.isArray(arg)) {
-      cnList.push(cn(...arg));
     }
   }
 

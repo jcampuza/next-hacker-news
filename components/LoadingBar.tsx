@@ -1,8 +1,7 @@
+import { cn } from '@lib/cn';
 import { clamp, getRandomInRange } from '@lib/math';
 import { useRouteChange } from '@lib/useRouteChange';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { Container } from './container';
 
 interface TickerOptions {
   onTick: () => void;
@@ -26,7 +25,7 @@ const getTickIncrease = (curr: number) => {
   return curr + 0.01;
 };
 
-const createTicker = (opts: TickerOptions) => {
+const createLoadingTicker = (opts: TickerOptions) => {
   let timeoutId: NodeJS.Timeout;
   let intervalId: NodeJS.Timeout;
 
@@ -51,7 +50,7 @@ const createTicker = (opts: TickerOptions) => {
   };
 };
 
-const LoadingBar = () => {
+export const LoadingBar = () => {
   const loading = useRouteChange();
   const [loadingTick, setLoadingTick] = useState(0);
 
@@ -63,13 +62,12 @@ const LoadingBar = () => {
       return;
     }
 
-    const ticker = createTicker({
-      delay: 400,
+    const ticker = createLoadingTicker({
+      delay: 200,
       interval: 400,
       onTick: () => {
         return setLoadingTick((curr) => {
           const increase = getTickIncrease(curr);
-          console.log(increase);
           return clamp(curr + increase, 0, 0.99);
         });
       },
@@ -95,6 +93,7 @@ const LoadingBar = () => {
     }
 
     setLoadingTick(1);
+
     const id = setTimeout(() => {
       return setLoadingTick(0);
     }, 200);
@@ -104,41 +103,17 @@ const LoadingBar = () => {
     };
   }, [loading, loadingTick]);
 
-  const transition = loadingTick === 0 ? 'none' : '250ms transform ease-out';
+  const isLoading = loadingTick !== 0;
 
   return (
     <div
-      className="absolute top-0 h-0.5 bg-blue-400 w-full"
+      className={cn('absolute top-0 h-0.5 bg-blue-400 w-full', {
+        'transition-transform': isLoading,
+        'origin-left': isLoading,
+      })}
       style={{
-        transition,
-        transformOrigin: 'left',
         transform: `scaleX(${loadingTick})`,
       }}
     ></div>
-  );
-};
-
-export const Header = () => {
-  return (
-    <header className="relative w-full bg-gradient-to-r from-red-700 to-red-900 shadow-sm">
-      <LoadingBar />
-      <Container>
-        <div className="flex">
-          <h1 className="text-md text-white font-semibold">
-            <Link href="/">
-              <a>Next HN</a>
-            </Link>
-          </h1>
-
-          <span className="mx-2"> | </span>
-
-          <nav className="flex text-white text-sm items-center">
-            <Link href="/new">
-              <a className="underline">New</a>
-            </Link>
-          </nav>
-        </div>
-      </Container>
-    </header>
   );
 };
