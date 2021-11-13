@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Container } from './Container';
+import { Link } from './Link';
 import { LoadingBar } from './LoadingBar';
 
 export const Header = () => {
@@ -9,17 +9,13 @@ export const Header = () => {
       <Container>
         <div className="flex">
           <h1 className="text-md text-white font-semibold">
-            <Link href="/">
-              <a>Next HN</a>
-            </Link>
+            <Link href="/">Next HN</Link>
           </h1>
 
           <span className="mx-2"> | </span>
 
           <nav className="flex text-white text-sm items-center">
-            <Link href="/new">
-              <a className="underline">New</a>
-            </Link>
+            <Link href="/new">New</Link>
           </nav>
         </div>
       </Container>
